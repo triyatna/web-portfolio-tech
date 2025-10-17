@@ -1,0 +1,18 @@
+{
+  "compact": true,
+  "controlFlowFlattening": false,
+  "deadCodeInjection": false,
+  "identifierNamesGenerator": "hexadecimal",
+  "numbersToExpressions": true,
+  "renameGlobals": true,
+  "selfDefending": false,
+  "simplify": true,
+  "splitStrings": true,
+  "stringArray": true,
+  "stringArrayThreshold": 0.25,
+  "transformObjectKeys": true,
+  "disableConsoleOutput": true,
+  "sourceMap": false,
+  "target": "browser",
+  "reservedNames": ["^__VITE_"]
+}

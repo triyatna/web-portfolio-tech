@@ -1,0 +1,215 @@
+{
+  "useLoader": true,
+  "personal": {
+    "name": "Tri Yatna",
+    "tagline": "A Web Developer who is lazy to code from Indonesia",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/76424714?v=4",
+    "location": "Indonesia",
+    "email": "Triyatna.dev@gmail.com",
+    "socials": {
+      "github": "https://github.com/triyatna",
+      "twitter": "",
+      "linkedin": "",
+      "instagram": "https://www.instagram.com/triyatna.dev/",
+      "facebook": "",
+      "youtube": "",
+      "twitch": "",
+      "dribbble": "",
+      "behance": "",
+      "medium": "https://medium.com/@triyatna",
+      "devto": "",
+      "hashnode": "",
+      "polywork": "",
+      "website": "https://triyatna.is-a.dev",
+      "stackoverflow": "",
+      "codepen": "",
+      "codesandbox": "",
+      "fiverr": "",
+      "upwork": "",
+      "discord": "",
+      "telegram": "",
+      "whatsapp": "",
+      "skype": "",
+      "snapchat": "",
+      "pinterest": "",
+      "tiktok": "",
+      "reddit": "",
+      "tumblr": "",
+      "quora": "",
+      "gitlab": "",
+      "bitbucket": "",
+      "rss": "",
+      "custom": [
+        {
+          "label": "Buy Me A Coffee",
+          "link": "https://www.buymeacoffee.com/triyatna",
+          "iconUrl": "https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+        }
+      ]
+    }
+  },
+  "hero": {
+    "terminal": {
+      "lines": [
+        "whoami",
+        "tri_yatna",
+        "curl https://triyatna.is-a.dev > profile.txt",
+        "cat profile.txt | grep 'Web Developer' || echo \"(Sites says I’m awesome anyway)\"",
+        "echo \"Portfolio loaded. Ready to explore?\""
+      ],
+      "typeSpeedMs": 140,
+      "backspaceSpeedMs": 24,
+      "loop": true,
+      "pauseBetweenLoopsMs": 2200,
+      "cursor": true
+    }
+  },
+  "about": {
+    "enabled": true,
+    "markdown": "Hello! I'm Tri Yatna, a passionate web developer from Indonesia. I specialize in creating fast and efficient web applications using modern technologies like React, Three.js, and Tailwind CSS. When I'm not coding, I enjoy exploring new tech trends and contributing to open-source projects. Feel free to explore my portfolio and get in touch!"
+  },
+  "portfolio": {
+    "enabled": true,
+    "data": [
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Personal Portfolio",
+        "description": "My personal portfolio website built with React and Tailwind CSS.",
+        "link": "https://triyatna.is-a.dev"
+      },
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Project Name",
+        "description": "Brief description of the project goes here.",
+        "link": "https://example.com"
+      },
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Sample Project",
+        "description": "Brief description of a sample project goes here.",
+        "link": "https://example.com"
+      }
+    ]
+  },
+  "resume": {
+    "enabled": true,
+    "education": [
+      {
+        "title": "Bachelor's Degree in Information Technology",
+        "org": "XYZ University",
+        "period": "2018 - 2022",
+        "details": "Graduated with honors, focusing on web development and software engineering."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Frontend Developer",
+        "org": "ABC Tech",
+        "period": "2022 - Present",
+        "details": "Developing and maintaining web applications using React and Tailwind CSS. Collaborating with designers and backend developers to create seamless user experiences."
+      },
+      {
+        "title": "Web Development Intern",
+        "org": "Web Solutions Inc.",
+        "period": "June 2021 - August 2021",
+        "details": "Assisted in building responsive websites and learned best practices in web development."
+      }
+    ],
+    "skills": [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Three.js",
+      "Tailwind CSS",
+      "HTML",
+      "CSS",
+      "Git",
+      "Vite"
+    ]
+  },
+  "techStack": {
+    "enabled": true,
+    "badges": [
+      {
+        "label": "React",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "label": "Three.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
+      },
+      {
+        "label": "Tailwind CSS",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+      }
+    ]
+  },
+  "projects": {
+    "github": {
+      "enabled": true,
+      "user": "triyatna",
+      "max": 9,
+      "filter": {
+        "excludeForks": true,
+        "topicsIncludeAny": []
+      }
+    },
+    "custom": [
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Personal Portfolio",
+        "description": "My personal portfolio website built with React and Tailwind CSS.",
+        "link": "https://triyatna.is-a.dev"
+      }
+    ]
+  },
+  "blog": {
+    "enabled": true,
+    "rssJson": "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@triyatna",
+    "max": 6
+  },
+  "contact": {
+    "enabled": true,
+    "form": {
+      "mode": "mailto",
+      "to": "Triyatna.dev@gmail.com",
+      "formspreeId": ""
+    },
+    "contact_me": {
+      "address": "Karawang,Indonesia",
+      "email": "triyatna.dev@gmail.com",
+      "website": "triyatna.is-a.dev"
+    }
+  },
+  "seo": {
+    "siteUrl": "https://triyatna.is-a.dev",
+    "basePath": "/",
+    "title": "Tri Yatna — Web Developer Portfolio",
+    "description": "Fast, modern, programmer-themed portfolio by Tri Yatna.",
+    "image": "/og-image.png",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "siteName": "Tri Yatna",
+    "locale": "en_US",
+    "twitter": "@triyatna",
+    "keywords": [
+      "portfolio",
+      "web portfolio",
+      "tri yatna",
+      "triyatna",
+      "tri",
+      "triyatna portfolio"
+    ],
+    "robots": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    "googleSiteVerification": "your-google-code",
+    "bingSiteVerification": "your-bing-code",
+    "yandexSiteVerification": "",
+    "alternates": { "en": "/", "id": "/id/" },
+    "rss": "/rss.xml",
+    "preconnect": [
+      "https://avatars.githubusercontent.com",
+      "https://api.github.com",
+      "https://images.unsplash.com"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme variables (light / dark) */
+:root {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --accent: #0969da;
+  --border: #d0d7de;
+  --gradient: linear-gradient(90deg, #0969da, #58a6ff);
+}
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #58a6ff;
+  --border: #30363d;
+  --gradient: linear-gradient(90deg, #1f6feb, #2d9cdb);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+@layer utilities {
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .bg-surface-soft {
+    background-color: color-mix(in oklab, var(--surface) 90%, transparent);
+  }
+  .bg-surface-elev {
+    background-color: color-mix(in oklab, var(--surface) 96%, transparent);
+  }
+  .text-muted {
+    color: var(--text-muted);
+  }
+  .border-subtle {
+    border-color: var(--border);
+  }
+  .accent {
+    color: var(--accent);
+  }
+  .bg-gradient-accent {
+    background-image: var(--gradient);
+  }
+  /* .focus-ring {
+    @apply outline-none ring-2 ring-offset-2 ring-[var(--accent)] ring-offset-[var(--bg)];
+  } */
+}
+
+/* Matrix rain canvas behind content */
+#matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: normal;
+}
+[data-theme="light"] #matrix-canvas {
+  opacity: 0.2;
+}
