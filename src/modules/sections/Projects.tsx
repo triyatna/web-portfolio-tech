@@ -15,44 +15,64 @@ type ViewMode = "grid" | "list";
 type SortKey = "stars" | "updated" | "name";
 type SortDir = "asc" | "desc";
 
+type Repo = {
+  id: number;
+  name: string;
+  html_url: string;
+  description?: string;
+  stargazers_count: number;
+  updated_at: string;
+  language?: string;
+  fork?: boolean;
+  topics?: string[];
+};
+
 export const Projects: React.FC<{ config: Config }> = ({ config }) => {
-  const [repos, setRepos] = useState<any[] | null>(null);
+  const gh = config.github;
+  const [repos, setRepos] = useState<Repo[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [q, setQ] = useState("");
-  const dq = useDeferredValue(q); // haluskan input
+  const dq = useDeferredValue(q);
   const [sortKey, setSortKey] = useState<SortKey>("stars");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [view, setView] = useState<ViewMode>("grid");
 
   useEffect(() => {
-    if (!config.github?.enabled) return;
+    if (!gh?.enabled || !gh.user) return;
     const controller = new AbortController();
 
-    async function load() {
+    (async () => {
       try {
         setError(null);
         setRepos(null);
 
         const res = await fetch(
-          `https://api.github.com/users/${config.github.user}/repos?per_page=100`,
+          `https://api.github.com/users/${encodeURIComponent(gh.user)}/repos?per_page=100`,
           { headers: { Accept: "application/vnd.github+json" }, signal: controller.signal }
         );
 
-        if (res.status === 403) {
-          setError("GitHub rate limit reached. Try again later.");
+        if (!res.ok) {
+          if (res.status === 403) {
+            setError("GitHub rate limit reached. Try again later.");
+            return;
+          }
+          setError(`GitHub error: ${res.status}`);
           return;
         }
 
-        const json = await res.json();
-        let items = Array.isArray(json) ? json : [];
+        const json = (await res.json()) as unknown;
+        let items: Repo[] = Array.isArray(json) ? (json as Repo[]) : [];
 
-        if (config.github.filter?.excludeForks) items = items.filter((r) => !r.fork);
+        if (gh.filter?.excludeForks) items = items.filter((r) => !r.fork);
 
-        const topics = config.github.filter?.topicsIncludeAny || [];
+        const topics = gh.filter?.topicsIncludeAny ?? [];
         if (topics.length) {
+          const want = topics.map((t) => t.toLowerCase());
           items = items.filter(
-            (r) => Array.isArray(r.topics) && r.topics.some((t: string) => topics.includes(t))
+            (r) =>
+              Array.isArray(r.topics) &&
+              r.topics.some((t) => want.includes(String(t).toLowerCase()))
           );
         }
 
@@ -64,17 +84,16 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
 
         setRepos(items);
       } catch (e: any) {
-        if (e.name !== "AbortError") setError("Failed to load GitHub repositories.");
+        if (e?.name !== "AbortError") setError("Failed to load GitHub repositories.");
       }
-    }
+    })();
 
-    load();
     return () => controller.abort();
   }, [
-    config.github?.enabled,
-    config.github?.user,
-    config.github?.filter?.excludeForks,
-    JSON.stringify(config.github?.filter?.topicsIncludeAny),
+    gh?.enabled,
+    gh?.user,
+    gh?.filter?.excludeForks,
+    JSON.stringify(gh?.filter?.topicsIncludeAny),
   ]);
 
   const filtered = useMemo(() => {
@@ -105,13 +124,13 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
       return sortDir === "asc" ? cmp : -cmp;
     });
 
-    const max = config.github?.max ?? 9;
+    const max = gh?.max ?? 9;
     return items.slice(0, max);
-  }, [repos, dq, sortKey, sortDir, config.github?.max]);
+  }, [repos, dq, sortKey, sortDir, gh?.max]);
 
   return (
     <div className="space-y-10">
-      {config.github?.enabled && (
+      {gh?.enabled && (
         <div>
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <h2 className="text-2xl font-semibold">GitHub Projects</h2>
@@ -172,7 +191,9 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
                   type="button"
                   aria-pressed={view === "grid"}
                   onClick={() => setView("grid")}
-                  className={`h-9 w-9 rounded-lg focus-ring transition ${view === "grid" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/70"}`}
+                  className={`h-9 w-9 rounded-lg focus-ring transition cursor-pointer  ${
+                    view === "grid" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/90"
+                  }`}
                   title="Grid view"
                 >
                   <svg
@@ -188,7 +209,9 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
                   type="button"
                   aria-pressed={view === "list"}
                   onClick={() => setView("list")}
-                  className={`h-9 w-9 rounded-lg focus-ring transition ${view === "list" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/70"}`}
+                  className={`h-9 w-9 rounded-lg focus-ring transition cursor-pointer ${
+                    view === "list" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/90"
+                  }`}
                   title="List view"
                 >
                   <svg

@@ -1,10 +1,12 @@
 import React from "react";
-import siteData from "../../data/data.json";
 
-type SocialsInput = {
-  [key: string]: any;
-  custom?: Array<{ label: string; link: string; iconUrl?: string }>;
-};
+type CustomItem = { label: string; link: string; iconUrl?: string };
+export type SocialsInput =
+  | {
+      custom?: CustomItem[];
+      [key: string]: string | CustomItem[] | undefined;
+    }
+  | undefined;
 
 const ICON = {
   github: (
@@ -167,30 +169,27 @@ const ICON = {
       <path d="M4 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-.5-6.5v3A8.5 8.5 0 0 1 12 23h3A11.5 11.5 0 0 0 3.5 11.5zm0-6v3A14.5 14.5 0 0 1 18 23h3A17.5 17.5 0 0 0 3.5 5z" />
     </svg>
   ),
-} as const satisfies Record<string, React.ReactElement>;
+} as const;
 
 type IconKey = keyof typeof ICON;
-
-const ALIAS: Record<string, IconKey> = {
-  x: "twitter",
-  site: "website",
-  portfolio: "website",
-};
+const ALIAS: Record<string, IconKey> = { x: "twitter", site: "website", portfolio: "website" };
 
 function pickIcon(key: string): React.ReactElement {
   const k = key.toLowerCase();
-  const normalized: IconKey = (ALIAS[k] ?? (k in ICON ? (k as IconKey) : "website")) as IconKey;
+  const normalized = (ALIAS[k] ?? (k in ICON ? (k as IconKey) : "website")) as IconKey;
   return ICON[normalized];
 }
 
-export const Footer: React.FC<{ socials: SocialsInput }> = ({ socials }) => {
-  const items = Object.entries(socials || {})
-    .filter(([k]) => k !== "custom")
-    .filter(([_, v]) => typeof v === "string" && !!v);
-
-  const custom = Array.isArray(socials?.custom) ? socials.custom : [];
-
-  const name = siteData?.personal?.name || "Tri Yatna";
+export const Footer: React.FC<{ socials?: SocialsInput; name?: string; studioTag?: string }> = ({
+  socials,
+  name,
+  studioTag = "TY Studio DEV",
+}) => {
+  const pairs = Object.entries(socials || {}).filter(
+    ([k, v]) => k !== "custom" && typeof v === "string" && !!v
+  );
+  const custom = (socials?.custom ?? []).filter(Boolean);
+  const displayName = name || "Your Name";
   const year = new Date().getFullYear();
 
   return (
@@ -203,9 +202,9 @@ export const Footer: React.FC<{ socials: SocialsInput }> = ({ socials }) => {
       <div className="w-full border-t border-subtle bg-[color:var(--bg)]/65 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="mx-auto grid max-w-3xl grid-cols-[repeat(auto-fit,minmax(44px,1fr))] gap-3">
-            {items.map(([key, url]) => (
+            {pairs.map(([key, url]) => (
               <a
-                key={key}
+                key={`std-${key}`}
                 href={String(url)}
                 target="_blank"
                 rel="noreferrer"
@@ -219,43 +218,46 @@ export const Footer: React.FC<{ socials: SocialsInput }> = ({ socials }) => {
               </a>
             ))}
 
-            {custom.map((c, i) => (
-              <a
-                key={`custom-${i}`}
-                href={c.link}
-                target="_blank"
-                rel="noreferrer"
-                title={c.label}
-                className="group col-span-2 sm:col-span-1 inline-flex items-center gap-2 rounded-xl px-3 py-2 border border-subtle bg-[color:var(--bg)]/55 hover:bg-[color:var(--accent)]/10 transition shadow-sm hover:shadow focus-ring"
-              >
-                {c.iconUrl ? (
-                  <img
-                    src={c.iconUrl}
-                    alt=""
-                    className="h-4 w-4 rounded-sm object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="text-[color:var(--accent)]">{pickIcon("website")}</span>
-                )}
-                <span className="truncate text-[color:var(--text)] group-hover:text-[color:var(--accent)] text-xs font-medium">
-                  {c.label}
-                </span>
-              </a>
-            ))}
+            {custom.map((c) => {
+              const key = `${c.label}-${c.link}`;
+              return (
+                <a
+                  key={key}
+                  href={c.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={c.label}
+                  className="group col-span-2 sm:col-span-1 inline-flex items-center gap-2 rounded-xl px-3 py-2 border border-subtle bg-[color:var(--bg)]/55 hover:bg-[color:var(--accent)]/10 transition shadow-sm hover:shadow focus-ring"
+                >
+                  {c.iconUrl ? (
+                    <img
+                      src={c.iconUrl}
+                      alt=""
+                      className="h-4 w-4 rounded-sm object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-[color:var(--accent)]">{pickIcon("website")}</span>
+                  )}
+                  <span className="truncate text-[color:var(--text)] group-hover:text-[color:var(--accent)] text-xs font-medium">
+                    {c.label}
+                  </span>
+                </a>
+              );
+            })}
           </div>
 
           <div aria-hidden="true" className="ft-divider mx-auto my-6 h-px max-w-3xl" />
 
           <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-3 sm:flex-row">
             <p className="text-muted">
-              Copyright © {year} {name}. All rights reserved.
+              Copyright © {year} {displayName}. All rights reserved.
             </p>
             <div className="flex items-center gap-3">
               <span className="text-xs text-muted">Built with ❤️</span>
               <span className="inline-flex items-center gap-1 rounded-lg border border-subtle bg-[color:var(--bg)]/55 px-2 py-1 text-xs">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" />
-                <span className="text-muted">TY Studio DEV</span>
+                <span className="text-muted">{studioTag}</span>
               </span>
             </div>
           </div>
@@ -268,19 +270,9 @@ export const Footer: React.FC<{ socials: SocialsInput }> = ({ socials }) => {
       />
 
       <style>{`
-        .ft-topline {
-          background: linear-gradient(90deg, transparent, var(--accent), transparent);
-          opacity: 0.6;
-        }
-        .ft-divider {
-          background: linear-gradient(90deg, transparent, var(--accent), transparent);
-          opacity: 0.25;
-        }
-        .ft-backdrop {
-          background: radial-gradient(60% 100% at 50% 100%, color-mix(in oklch, var(--accent) 20%, transparent) 0%, transparent 70%);
-          filter: blur(20px);
-          opacity: 0.6;
-        }
+        .ft-topline { background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .6; }
+        .ft-divider { background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .25; }
+        .ft-backdrop { background: radial-gradient(60% 100% at 50% 100%, color-mix(in oklch, var(--accent) 20%, transparent) 0%, transparent 70%); filter: blur(20px); opacity: .6; }
       `}</style>
     </footer>
   );

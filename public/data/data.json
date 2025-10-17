@@ -197,7 +197,7 @@
     "generator": "Vite + React",
     "notranslate": false,
 
-    "image": "/assets/images/og-image.png",
+    "image": "/og-image.png",
     "imageWidth": 1200,
     "imageHeight": 630,
 
@@ -217,11 +217,12 @@
       "https://api.github.com",
       "https://images.unsplash.com"
     ],
+
     "favicons": {
-      "icon": "/assets/images/favicon.svg",
-      "apple": "/assets/images/apple-touch-icon.png",
-      "shortcut": "/assets/images/favicon.ico",
-      "maskIconHref": "/assets/images/safari-pinned-tab.svg",
+      "icon": "/favicon.svg",
+      "apple": "/apple-touch-icon.png",
+      "shortcut": "/favicon.svg",
+      "maskIconHref": "/favicon.svg",
       "maskIconColor": "#0D1117"
     },
     "manifest": "/site.webmanifest",
@@ -240,7 +241,7 @@
       "name": "Tri Yatna Studio",
       "legalName": "Tri Yatna Studio",
       "url": "https://triyatna.is-a.dev",
-      "logo": "/assets/images/apple-touch-icon.png",
+      "logo": "/apple-touch-icon.png",
       "sameAs": ["https://github.com/triyatna"]
     }
   }

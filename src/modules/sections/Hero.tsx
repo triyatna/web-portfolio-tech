@@ -1,19 +1,44 @@
 import React, { Suspense, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
+import type { SiteData } from "../hooks/useAppData";
 import { TerminalTyper } from "../components/TerminalTyper";
 
-type Data = typeof import("../../data/data.json");
 const ThreeHero = React.lazy(() => import("../components/ThreeHero"));
 
-export const Hero: React.FC<{ data: Data }> = ({ data }) => {
+export const Hero: React.FC<{ data: SiteData }> = ({ data }) => {
+  const p = data.personal ?? ({} as NonNullable<SiteData["personal"]>);
   const t = data.hero?.terminal;
-  const p = data.personal;
+
+  const name = p.name?.trim() || "Your Name";
+  const tagline = p.tagline?.trim() || "Web Developer";
+  const avatarUrl = p.avatarUrl?.trim() || "/apple-touch-icon.png";
+
+  const lines =
+    t?.lines && t.lines.length > 0
+      ? t.lines
+      : [
+          `echo "Hi, I'm ${name}"`,
+          `# ${tagline}`,
+          "cat ./skills.txt | grep -E 'React|Node|Laravel|Tailwind'",
+        ];
+
+  const typeSpeedMs = t?.typeSpeedMs ?? 40;
+  const backspaceSpeedMs = t?.backspaceSpeedMs ?? 24;
+  const loop = !!t?.loop;
+  const pauseBetweenLoopsMs = t?.pauseBetweenLoopsMs ?? 1200;
+  const cursor = !!t?.cursor;
 
   const cardRef = useRef<HTMLDivElement | null>(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rX = useSpring(useTransform(my, [-50, 50], [10, -10]), { stiffness: 140, damping: 15 });
-  const rY = useSpring(useTransform(mx, [-50, 50], [-10, 10]), { stiffness: 140, damping: 15 });
+  const rX = useSpring(useTransform(my, [-50, 50], [10, -10]), {
+    stiffness: 140,
+    damping: 15,
+  });
+  const rY = useSpring(useTransform(mx, [-50, 50], [-10, 10]), {
+    stiffness: 140,
+    damping: 15,
+  });
   const scale = useSpring(1, { stiffness: 180, damping: 18 });
   const shadow = useMotionTemplate`
     0px 25px 60px rgba(0,0,0,0.35),
@@ -74,13 +99,16 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
             />
 
             <motion.img
-              src={p.avatarUrl}
-              alt={`${p.name} avatar`}
+              src={avatarUrl}
+              alt={`${name} avatar`}
               className="avatar-img relative z-10 h-full w-full rounded-3xl object-cover"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 120, damping: 15 }}
               draggable={false}
+              loading="eager"
+              decoding="async"
+              {...{ fetchpriority: "high" }}
             />
 
             <div
@@ -106,43 +134,41 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
           </motion.div>
 
           <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            <span className="hero-title-text">{p.name}</span>
+            <span className="hero-title-text">{name}</span>
             <span aria-hidden className="hero-title-underline" />
           </h1>
 
-          <p className="hero-tagline mt-3 max-w-xl text-base md:text-lg">{p.tagline}</p>
+          <p className="hero-tagline mt-3 max-w-xl text-base md:text-lg">{tagline}</p>
         </div>
 
         <style>
           {`
   .avatar-img{
-  border-radius: 1.5rem;            
-  transition: filter .35s ease, box-shadow .35s ease, transform .25s ease;
-  will-change: filter, box-shadow, transform;
-}
+    border-radius: 1.5rem;
+    transition: filter .35s ease, box-shadow .35s ease, transform .25s ease;
+    will-change: filter, box-shadow, transform;
+  }
   [data-theme="light"] .avatar-img{
-  filter: saturate(1.05) contrast(1.02) brightness(1.02);
-  box-shadow:
-    0 0 0 1px color-mix(in oklch, var(--accent) 10%, transparent) inset,
-    0 16px 30px rgba(0,0,0,.08);
-}
-       [data-theme="dark"] .avatar-img{
-  filter:
-    grayscale(.85)      /* redupkan warna asli */
-    saturate(.9)        /* jaga natural */
-    contrast(1.06)      /* tambah ketegasan */
-    brightness(.92)     /* sedikit lebih gelap agar sesuai dark bg */
-    hue-rotate(-8deg);  /* hint cool tone */
-  box-shadow:
-    0 0 0 1px color-mix(in oklch, var(--accent) 22%, transparent) inset,
-    0 10px 30px rgba(0,0,0,.55),
-    0 0 28px color-mix(in oklch, var(--accent) 22%, transparent);
-}
+    filter: saturate(1.05) contrast(1.02) brightness(1.02);
+    box-shadow:
+      0 0 0 1px color-mix(in oklch, var(--accent) 10%, transparent) inset,
+      0 16px 30px rgba(0,0,0,.08);
+  }
+  [data-theme="dark"] .avatar-img{
+    filter:
+      grayscale(.85)
+      saturate(.9)
+      contrast(1.06)
+      brightness(.92)
+      hue-rotate(-8deg);
+    box-shadow:
+      0 0 0 1px color-mix(in oklch, var(--accent) 22%, transparent) inset,
+      0 10px 30px rgba(0,0,0,.55),
+      0 0 28px color-mix(in oklch, var(--accent) 22%, transparent);
+  }
+  .avatar-img:hover{ transform: translateY(-1px) scale(1.005); }
 
-.avatar-img:hover{
-  transform: translateY(-1px) scale(1.005);
-}
-         .hero-title-text{
+  .hero-title-text{
     background: linear-gradient(90deg,
       color-mix(in oklch, var(--text) 100%, transparent) 0%,
       color-mix(in oklch, var(--accent) 70%, var(--text)) 100%
@@ -150,7 +176,6 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    /* glow subtle agar tetap kebaca di atas visual 3D */
     filter: drop-shadow(0 0 18px color-mix(in oklch, var(--accent) 25%, transparent));
   }
   [data-theme="light"] .hero-title-text{
@@ -190,7 +215,6 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
       0 0 0 1px color-mix(in oklch, var(--accent) 7%, transparent) inset;
   }
   [data-theme="dark"] .hero-tagline{
-    /* sedikit lebih terang agar tidak tenggelam di background */
     background:
       linear-gradient(to right,
         color-mix(in oklch, var(--bg) 65%, transparent) 0%,
@@ -206,19 +230,13 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
   }
 
   .hero-tagline-dot{
-    width: .5rem;
-    height: .5rem;
-    border-radius: 999px;
-    background: var(--accent);
+    width: .5rem; height: .5rem; border-radius: 999px; background: var(--accent);
     box-shadow: 0 0 18px color-mix(in oklch, var(--accent) 45%, transparent);
-    display: inline-block;
-    animation: heroDot 2s ease-in-out infinite;
-    flex: none;
+    display: inline-block; animation: heroDot 2s ease-in-out infinite; flex: none;
   }
-  @keyframes heroDot{
-    0%, 100% { transform: translateY(0); opacity: .95; }
-    50% { transform: translateY(-1px); opacity: .7; }
-  }`}
+  @keyframes heroDot{ 0%,100%{transform:translateY(0);opacity:.95} 50%{transform:translateY(-1px);opacity:.7} }
+  @keyframes scan { 0% { background-position-y: 0 } 100% { background-position-y: 100% } }
+`}
         </style>
       </div>
 
@@ -228,17 +246,16 @@ export const Hero: React.FC<{ data: Data }> = ({ data }) => {
         </Suspense>
       </div>
 
-      {/* Kanan: Terminal */}
       <div className="relative">
-        {t && (
+        {lines && (
           <div className="mt-6 aspect-video">
             <TerminalTyper
-              lines={t.lines}
-              typeSpeedMs={t.typeSpeedMs ?? 40}
-              backspaceSpeedMs={t.backspaceSpeedMs ?? 24}
-              loop={!!t.loop}
-              pauseBetweenLoopsMs={t.pauseBetweenLoopsMs ?? 1200}
-              cursor={!!t.cursor}
+              lines={lines}
+              typeSpeedMs={typeSpeedMs}
+              backspaceSpeedMs={backspaceSpeedMs}
+              loop={loop}
+              pauseBetweenLoopsMs={pauseBetweenLoopsMs}
+              cursor={cursor}
             />
           </div>
         )}
