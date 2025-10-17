@@ -6,13 +6,14 @@
     "avatarUrl": "https://avatars.githubusercontent.com/u/76424714?v=4",
     "location": "Indonesia",
     "email": "Triyatna.dev@gmail.com",
+    "logo_path": "./apple-touch-icon.png",
     "socials": {
       "github": "https://github.com/triyatna",
       "twitter": "",
       "linkedin": "",
-      "instagram": "https://www.instagram.com/triyatna.dev/",
-      "facebook": "",
-      "youtube": "",
+      "instagram": "https://www.instagram.com/triyatna_lesmana/",
+      "facebook": "https://www.facebook.com/3yatna/",
+      "youtube": "https://www.youtube.com/@tyatnayt",
       "twitch": "",
       "dribbble": "",
       "behance": "",
@@ -39,13 +40,7 @@
       "gitlab": "",
       "bitbucket": "",
       "rss": "",
-      "custom": [
-        {
-          "label": "Buy Me A Coffee",
-          "link": "https://www.buymeacoffee.com/triyatna",
-          "iconUrl": "https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-        }
-      ]
+      "custom": []
     }
   },
   "hero": {
@@ -66,31 +61,9 @@
   },
   "about": {
     "enabled": true,
-    "markdown": "Hello! I'm Tri Yatna, a passionate web developer from Indonesia. I specialize in creating fast and efficient web applications using modern technologies like React, Three.js, and Tailwind CSS. When I'm not coding, I enjoy exploring new tech trends and contributing to open-source projects. Feel free to explore my portfolio and get in touch!"
+    "markdown": "Hello! I'm Tri Yatna, a passionate web developer from Indonesia 🇮🇩.\nI have experience as a website developer and cloud engineer, specializing in building fast, scalable, and secure web applications.\n\nI enjoy working with PHP (Laravel), Node.js, and modern front-end tools like React and TailwindCSS.\nIn the cloud world, I love optimizing servers with Caddy, Docker, and Cloudflare — making deployments smooth and reliable.\n\nBeyond code, I’m obsessed with automation, AI integration, and crafting systems that make life easier for both developers and users.\n\nWhen I’m not coding, you’ll find me experimenting with new tech stacks, tuning performance, or helping others bring their ideas online."
   },
-  "portfolio": {
-    "enabled": true,
-    "data": [
-      {
-        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
-        "name": "Personal Portfolio",
-        "description": "My personal portfolio website built with React and Tailwind CSS.",
-        "link": "https://triyatna.is-a.dev"
-      },
-      {
-        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
-        "name": "Project Name",
-        "description": "Brief description of the project goes here.",
-        "link": "https://example.com"
-      },
-      {
-        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
-        "name": "Sample Project",
-        "description": "Brief description of a sample project goes here.",
-        "link": "https://example.com"
-      }
-    ]
-  },
+
   "resume": {
     "enabled": true,
     "education": [
@@ -167,6 +140,29 @@
     "enabled": true,
     "rssJson": "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@triyatna",
     "max": 6
+  },
+  "portfolio": {
+    "enabled": true,
+    "data": [
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Personal Portfolio",
+        "description": "My personal portfolio website built with React and Tailwind CSS.",
+        "link": "https://triyatna.is-a.dev"
+      },
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Project Name",
+        "description": "Brief description of the project goes here.",
+        "link": "https://example.com"
+      },
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Sample Project",
+        "description": "Brief description of a sample project goes here.",
+        "link": "https://example.com"
+      }
+    ]
   },
   "contact": {
     "enabled": true,
