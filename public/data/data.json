@@ -1,0 +1,451 @@
+{
+  "useLoader": true,
+  "personal": {
+    "name": "Tri Yatna",
+    "tagline": "A Web Developer who is lazy to code from Indonesia",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/76424714?v=4",
+    "location": "Indonesia",
+    "email": "Triyatna.dev@gmail.com",
+    "logo_path": "./assets/images/apple-touch-icon.png",
+    "cvUrl": "",
+    "socials": {
+      "github": "https://github.com/triyatna",
+      "twitter": "",
+      "linkedin": "",
+      "instagram": "https://www.instagram.com/triyatna_lesmana/",
+      "facebook": "https://www.facebook.com/3yatna/",
+      "youtube": "https://www.youtube.com/@tyatnayt",
+      "twitch": "",
+      "dribbble": "",
+      "behance": "",
+      "medium": "https://medium.com/@triyatna",
+      "devto": "",
+      "hashnode": "",
+      "polywork": "",
+      "website": "https://triyatna.is-a.dev",
+      "stackoverflow": "",
+      "codepen": "",
+      "codesandbox": "",
+      "fiverr": "",
+      "upwork": "",
+      "discord": "",
+      "telegram": "",
+      "whatsapp": "",
+      "skype": "",
+      "snapchat": "",
+      "pinterest": "",
+      "tiktok": "",
+      "reddit": "",
+      "tumblr": "",
+      "quora": "",
+      "gitlab": "",
+      "bitbucket": "",
+      "rss": "",
+      "custom": []
+    }
+  },
+  "hero": {
+    "terminal": {
+      "lines": [
+        "whoami",
+        "tri_yatna",
+        "curl https://triyatna.is-a.dev > profile.txt",
+        "cat profile.txt | grep 'Web Developer' || echo \"(Sites says I’m awesome anyway)\"",
+        "echo \"Portfolio loaded. Ready to explore?\""
+      ],
+      "typeSpeedMs": 140,
+      "backspaceSpeedMs": 24,
+      "loop": true,
+      "pauseBetweenLoopsMs": 2200,
+      "cursor": true
+    }
+  },
+  "about": {
+    "enabled": true,
+    "markdown": "Hello! I'm Tri Yatna, a passionate web developer from Indonesia 🇮🇩.\nI have experience as a website developer and cloud engineer, specializing in building fast, scalable, and secure web applications.\n\nI enjoy working with PHP (Laravel), Node.js, and modern front-end tools like React and TailwindCSS.\nIn the cloud world, I love optimizing servers with Caddy, Docker, and Cloudflare — making deployments smooth and reliable.\n\nBeyond code, I’m obsessed with automation, AI integration, and crafting systems that make life easier for both developers and users.\n\nWhen I’m not coding, you’ll find me experimenting with new tech stacks, tuning performance, or helping others bring their ideas online."
+  },
+
+  "resume": {
+    "enabled": true,
+    "education": [
+      {
+        "title": "Bachelor's Degree in Management",
+        "org": "Widyatama University",
+        "period": "2020 - 2024",
+        "details": "Graduated with honors, with a focus on human resource development. Relevant coursework included project management, organizational behavior, and business strategy."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Founder & Web Developer",
+        "org": "TY Studio DEV",
+        "period": "2020 - Present",
+        "details": "Founded an agency specializing in full-stack website development, and established several businesses under TY Studio DEV, such as Detopupin, Destorein, and DeManage CRM. Managed client projects from conception to implementation."
+      }
+    ],
+    "skills": [
+      "PHP",
+      "Laravel",
+      "CodeIgniter",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "HTML",
+      "CSS",
+      "Git",
+      "Vite",
+      "Node.js",
+      "Python",
+      "MySQL",
+      "MongoDB",
+      "N8N",
+      "Microsoft Excel",
+      "Google Sheets",
+      "Microsoft Word",
+      "Microsoft PowerPoint",
+      "Microsoft Access",
+      "Google Docs",
+      "Google Slides",
+      "Google Forms",
+      "ATS Software",
+      "CRM Software",
+      "HRIS Software",
+      "CMS",
+      "Project Management",
+      "Team Leadership",
+      "Problem-Solving",
+      "Wordpress"
+    ]
+  },
+  "techStack": {
+    "enabled": true,
+    "badges": [
+      {
+        "label": "CSS3",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      },
+      {
+        "label": "Go",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+      },
+      {
+        "label": "GraphQL",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg"
+      },
+      {
+        "label": "HTML5",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+      },
+      {
+        "label": "JavaScript",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "label": "Markdown",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg"
+      },
+      {
+        "label": "PHP",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "label": "Python",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "label": "Perl",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/perl/perl-original.svg"
+      },
+      {
+        "label": "Windows Terminal",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg"
+      },
+      {
+        "label": "TypeScript",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+      },
+      {
+        "label": "Bash",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"
+      },
+      {
+        "label": "DigitalOcean",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg"
+      },
+      {
+        "label": "Cloudflare",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg"
+      },
+      {
+        "label": "AWS",
+        "iconUrl": "https://cdn.jsdelivr.net/npm/react-devicon@0.1.9/amazonwebservices/original/AmazonwebservicesOriginal.svg"
+      },
+      {
+        "label": "Azure",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg"
+      },
+      {
+        "label": "Firebase",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg"
+      },
+      {
+        "label": "Google Cloud",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg"
+      },
+      {
+        "label": "Heroku",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg"
+      },
+      {
+        "label": "Oracle",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg"
+      },
+      {
+        "label": "Vercel",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg"
+      },
+      {
+        "label": "Chart.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chartjs/chartjs-original.svg"
+      },
+      {
+        "label": "Chakra UI",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "label": "PNPM",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg"
+      },
+      {
+        "label": "Express.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+      },
+      {
+        "label": "Bootstrap",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg"
+      },
+      {
+        "label": "React",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "label": "Tailwind CSS",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+      },
+      {
+        "label": "Vite",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg"
+      },
+      {
+        "label": "Node.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "label": "Next.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"
+      },
+      {
+        "label": "Vue.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg"
+      },
+      {
+        "label": "Nuxt.js",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg"
+      },
+      {
+        "label": "Laravel",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg"
+      },
+      {
+        "label": "Livewire",
+        "iconUrl": "https://avatars.githubusercontent.com/u/51960834?v=4"
+      },
+      {
+        "label": "Docker",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+      },
+      {
+        "label": "Caddy",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg"
+      },
+      {
+        "label": "SQLite",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg"
+      },
+      {
+        "label": "MySQL",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      },
+      {
+        "label": "Redis",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg"
+      },
+      {
+        "label": "Postgres",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+      },
+      {
+        "label": "MongoDB",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      },
+      {
+        "label": "Firebase",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg"
+      },
+      {
+        "label": "Git",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+      },
+      {
+        "label": "CodeIgniter",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/codeigniter/codeigniter-plain.svg"
+      }
+    ]
+  },
+  "projects": {
+    "github": {
+      "enabled": true,
+      "user": "triyatna",
+      "max": 9,
+      "filter": {
+        "excludeForks": true,
+        "topicsIncludeAny": []
+      }
+    },
+    "custom": [
+      {
+        "icon": "./assets/images/favicon.svg",
+        "name": "Personal Portfolio",
+        "description": "My personal portfolio website built with React and Tailwind CSS.",
+        "link": "https://triyatna.is-a.dev"
+      },
+      {
+        "icon": "https://pkmsentra.org/wp-content/uploads/2023/02/Logo1.png",
+        "name": "PKM sEntra",
+        "description": "A student press media website \"sEntra\" at Widyatama University built using WordPress.",
+        "link": "https://pkmsentra.org"
+      },
+      {
+        "icon": "https://tylabs.tech/build/images/logo.png",
+        "name": "Detopupin",
+        "description": "A digital product selling website built with Laravel, Vue and Tailwind CSS.",
+        "link": "https://detopupin.com"
+      },
+      {
+        "icon": "https://aingdb.is-a.dev/logo-title.png",
+        "name": "AingDB",
+        "description": "AingDB is a free and open source database management system built with TypeScript and running on the NodeJS engine.",
+        "link": "https://aingdb.is-a.dev"
+      },
+      {
+        "icon": "https://raw.githubusercontent.com/triyatna/n8n-nodes-4discord/refs/heads/main/icons/discord.svg",
+        "name": "n8n-nodes-4discord",
+        "description": "An n8n community node package to integrate with Discord WSS & API.",
+        "link": "https://www.npmjs.com/package/@triyatna/n8n-nodes-4discord"
+      },
+      {
+        "icon": "https://raw.githubusercontent.com/triyatna/warest-whatsapp-web-multi/refs/heads/assets/warest(1).png",
+        "name": "WARest - Whatsapp Web Multi Sessions Unofficial REST API",
+        "description": "An unofficial REST API for WhatsApp Web Multi Sessions built with TypeScript and Express.js.",
+        "link": "https://github.com/triyatna/warest-whatsapp-web-multi"
+      }
+    ]
+  },
+  "blog": {
+    "enabled": true,
+    "rssJson": "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@triyatna",
+    "max": 6
+  },
+  "portfolio": {
+    "enabled": false,
+    "data": [
+      {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Vanamo_Logo.png",
+        "name": "Personal Portfolio",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "link": "https://triyatna.is-a.dev"
+      }
+    ]
+  },
+  "contact": {
+    "enabled": true,
+    "form": {
+      "mode": "mailto",
+      "to": "Triyatna.dev@gmail.com",
+      "formspreeId": ""
+    },
+    "contact_me": {
+      "address": "Karawang,Indonesia",
+      "email": "triyatna.dev@gmail.com",
+      "website": "triyatna.is-a.dev"
+    }
+  },
+  "seo": {
+    "siteUrl": "https://triyatna.is-a.dev",
+    "basePath": "/",
+    "title": "Tri Yatna — Web Developer Portfolio",
+    "description": "Fast, modern, programmer-themed portfolio by Tri Yatna.",
+    "keywords": [
+      "portfolio",
+      "web portfolio",
+      "tri yatna",
+      "triyatna",
+      "tri",
+      "triyatna portfolio"
+    ],
+    "robots": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    "locale": "en_US",
+    "siteName": "Tri Yatna",
+    "appName": "Tri Yatna",
+    "generator": "Vite + React",
+    "notranslate": false,
+
+    "image": "./assets/images/og-image.png",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+
+    "twitter": "@triyatna",
+    "twitterId": "",
+
+    "facebookAppId": "",
+    "facebookAdmins": [],
+    "fbPageId": "",
+
+    "alternates": { "en": "/", "id": "/id/" },
+    "localeAlternates": ["id_ID"],
+    "rss": "/rss.xml",
+
+    "preconnect": [
+      "https://avatars.githubusercontent.com",
+      "https://api.github.com",
+      "https://images.unsplash.com"
+    ],
+    "favicons": {
+      "icon": "./assets/images/favicon.svg",
+      "apple": "./assets/images/apple-touch-icon.png",
+      "shortcut": "./assets/images/favicon.ico",
+      "maskIconHref": "./assets/images/favicon.svg",
+      "maskIconColor": "#0D1117"
+    },
+    "manifest": "/site.webmanifest",
+    "themeColorLight": "#ffffff",
+    "themeColorDark": "#0D1117",
+
+    "googleSiteVerification": "",
+    "bingSiteVerification": "",
+    "yandexSiteVerification": "",
+
+    "seeAlso": ["https://github.com/triyatna"],
+    "articleTags": ["web", "portfolio", "react"],
+    "updatedAt": "2025-01-01T00:00:00.000Z",
+
+    "organization": {
+      "name": "Tri Yatna Studio",
+      "legalName": "Tri Yatna Studio",
+      "url": "https://triyatna.is-a.dev",
+      "logo": "./assets/images/apple-touch-icon.png",
+      "sameAs": ["https://github.com/triyatna"]
+    }
+  }
+}

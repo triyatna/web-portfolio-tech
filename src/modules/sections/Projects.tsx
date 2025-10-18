@@ -15,73 +15,93 @@ type ViewMode = "grid" | "list";
 type SortKey = "stars" | "updated" | "name";
 type SortDir = "asc" | "desc";
 
-export const Projects: React.FC<{ config: Config }> = ({ config }) => {
-  const [repos, setRepos] = useState<any[] | null>(null);
+type Repo = {
+  id: number;
+  name: string;
+  html_url: string;
+  description?: string;
+  stargazers_count: number;
+  updated_at: string;
+  language?: string;
+  fork?: boolean;
+  topics?: string[];
+};
+
+export const Projects: React.FC<{ config?: Config }> = ({ config }) => {
+  const cfg: Config = useMemo(() => config ?? {}, [config]);
+  const gh = cfg.github;
+
+  const [repos, setRepos] = useState<Repo[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [q, setQ] = useState("");
-  const dq = useDeferredValue(q); // haluskan input
+  const dq = useDeferredValue(q);
   const [sortKey, setSortKey] = useState<SortKey>("stars");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [view, setView] = useState<ViewMode>("grid");
 
   useEffect(() => {
-    if (!config.github?.enabled) return;
+    if (!gh?.enabled || !gh.user) return;
     const controller = new AbortController();
 
-    async function load() {
+    (async () => {
       try {
         setError(null);
         setRepos(null);
 
         const res = await fetch(
-          `https://api.github.com/users/${config.github.user}/repos?per_page=100`,
+          `https://api.github.com/users/${encodeURIComponent(gh.user)}/repos?per_page=100`,
           { headers: { Accept: "application/vnd.github+json" }, signal: controller.signal }
         );
 
-        if (res.status === 403) {
-          setError("GitHub rate limit reached. Try again later.");
+        if (!res.ok) {
+          setError(
+            res.status === 403
+              ? "GitHub rate limit reached. Try again later."
+              : `GitHub error: ${res.status}`
+          );
           return;
         }
 
-        const json = await res.json();
-        let items = Array.isArray(json) ? json : [];
+        let items = (await res.json()) as Repo[];
+        if (!Array.isArray(items)) items = [];
 
-        if (config.github.filter?.excludeForks) items = items.filter((r) => !r.fork);
+        if (gh.filter?.excludeForks) items = items.filter((r) => !r.fork);
 
-        const topics = config.github.filter?.topicsIncludeAny || [];
+        const topics = gh.filter?.topicsIncludeAny ?? [];
         if (topics.length) {
+          const want = topics.map((t) => t.toLowerCase());
           items = items.filter(
-            (r) => Array.isArray(r.topics) && r.topics.some((t: string) => topics.includes(t))
+            (r) =>
+              Array.isArray(r.topics) &&
+              r.topics.some((t) => want.includes(String(t).toLowerCase()))
           );
         }
 
         items.sort(
           (a, b) =>
-            b.stargazers_count - a.stargazers_count ||
+            (b.stargazers_count || 0) - (a.stargazers_count || 0) ||
             new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
         );
 
         setRepos(items);
       } catch (e: any) {
-        if (e.name !== "AbortError") setError("Failed to load GitHub repositories.");
+        if (e?.name !== "AbortError") setError("Failed to load GitHub repositories.");
       }
-    }
+    })();
 
-    load();
     return () => controller.abort();
   }, [
-    config.github?.enabled,
-    config.github?.user,
-    config.github?.filter?.excludeForks,
-    JSON.stringify(config.github?.filter?.topicsIncludeAny),
+    gh?.enabled,
+    gh?.user,
+    gh?.filter?.excludeForks,
+    JSON.stringify(gh?.filter?.topicsIncludeAny),
   ]);
 
   const filtered = useMemo(() => {
     if (!repos) return null;
 
     const query = dq.trim().toLowerCase();
-
     let items = repos.filter((r) => {
       if (!query) return true;
       const hay =
@@ -105,13 +125,13 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
       return sortDir === "asc" ? cmp : -cmp;
     });
 
-    const max = config.github?.max ?? 9;
+    const max = gh?.max ?? 9;
     return items.slice(0, max);
-  }, [repos, dq, sortKey, sortDir, config.github?.max]);
+  }, [repos, dq, sortKey, sortDir, gh?.max]);
 
   return (
     <div className="space-y-10">
-      {config.github?.enabled && (
+      {gh?.enabled && (
         <div>
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <h2 className="text-2xl font-semibold">GitHub Projects</h2>
@@ -172,7 +192,7 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
                   type="button"
                   aria-pressed={view === "grid"}
                   onClick={() => setView("grid")}
-                  className={`h-9 w-9 rounded-lg focus-ring transition ${view === "grid" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/70"}`}
+                  className={`h-9 w-9 rounded-lg focus-ring transition cursor-pointer  ${view === "grid" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/90"}`}
                   title="Grid view"
                 >
                   <svg
@@ -188,7 +208,7 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
                   type="button"
                   aria-pressed={view === "list"}
                   onClick={() => setView("list")}
-                  className={`h-9 w-9 rounded-lg focus-ring transition ${view === "list" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/70"}`}
+                  className={`h-9 w-9 rounded-lg focus-ring transition cursor-pointer ${view === "list" ? "bg-[color:var(--bg)]/70" : "hover:bg-[color:var(--bg)]/90"}`}
                   title="List view"
                 >
                   <svg
@@ -282,11 +302,11 @@ export const Projects: React.FC<{ config: Config }> = ({ config }) => {
         </div>
       )}
 
-      {config.custom && config.custom.length > 0 && (
+      {Array.isArray(cfg.custom) && cfg.custom.length > 0 && (
         <div>
           <h2 className="text-2xl font-semibold">My Projects</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {config.custom.map((p, i) => (
+            {cfg.custom.map((p, i) => (
               <a
                 key={i}
                 href={p.link || "#"}

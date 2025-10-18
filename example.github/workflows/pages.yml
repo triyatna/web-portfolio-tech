@@ -1,0 +1,161 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [[ -f pnpm-lock.yaml ]]; then
+            echo "pm=pnpm" >> "$GITHUB_OUTPUT"
+          elif [[ -f yarn.lock ]]; then
+            echo "pm=yarn" >> "$GITHUB_OUTPUT"
+          else
+            echo "pm=npm" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Using PM=${{ steps.pm.outputs.pm }}"
+
+      - name: Setup Node (npm)
+        if: steps.pm.outputs.pm == 'npm'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Node (yarn)
+        if: steps.pm.outputs.pm == 'yarn'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Setup Node (pnpm) + pnpm
+        if: steps.pm.outputs.pm == 'pnpm'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install pnpm
+        if: steps.pm.outputs.pm == 'pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install (npm ci)
+        if: steps.pm.outputs.pm == 'npm' && hashFiles('package-lock.json') != ''
+        run: npm ci --no-audit --no-fund
+
+      - name: Install (npm i)
+        if: steps.pm.outputs.pm == 'npm' && hashFiles('package-lock.json') == ''
+        run: npm i --no-audit --no-fund
+
+      - name: Install (yarn)
+        if: steps.pm.outputs.pm == 'yarn'
+        run: |
+          if [[ -f yarn.lock ]]; then
+            yarn install --frozen-lockfile
+          else
+            yarn install
+          fi
+
+      - name: Install (pnpm)
+        if: steps.pm.outputs.pm == 'pnpm'
+        run: pnpm install --frozen-lockfile
+
+      - name: Compute BASE_PATH
+        id: base
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          OWNER="${{ github.repository_owner }}"
+          if [[ "$REPO" == "$OWNER.github.io" ]]; then
+            echo "value=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=/$REPO/" >> "$GITHUB_OUTPUT"
+          fi
+          echo "BASE_PATH=${{ steps.base.outputs.value }}"
+
+      - name: Build
+        env:
+          BASE_PATH: ${{ steps.base.outputs.value }}
+        run: |
+          set -euo pipefail
+           PM="${{ steps.pm.outputs.pm }}"
+           BASE="${{ steps.base.outputs.value }}"
+           if [[ "$BASE" != "/" ]]; then BASE_FLAG=(--base "$BASE"); else BASE_FLAG=(); fi
+           if [[ "$PM" == "pnpm" ]]; then
+             pnpm vite build "${BASE_FLAG[@]}"
+           elif [[ "$PM" == "yarn" ]]; then
+             yarn run vite build "${BASE_FLAG[@]}"
+           else
+             npx vite build "${BASE_FLAG[@]}"
+           fi
+           node scripts/generate-meta.mjs
+           if [[ -f obf.config.json ]]; then
+             npx javascript-obfuscator dist --output dist --config obf.config.json
+           fi
+
+      - name: Ensure static 404
+        run: |
+          if [[ ! -f dist/404.html ]]; then
+          cat > dist/404.html <<'HTML'
+          <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>404 — Not Found</title><style>html,body{height:100%;margin:0;background:#0d1117;color:#e6edf3;display:grid;place-items:center;font:16px/1.5 ui-sans-serif,system-ui;-webkit-font-smoothing:antialiased;}</style><body>
+          <main><h1>404</h1><p>Page not found.</p></main></body></html>
+          HTML
+          fi
+          if grep -E '<script[^>]+src=.*/assets/js/' dist/404.html >/dev/null 2>&1; then
+            echo "dist/404.html must be static (no app bundle)"; exit 1
+          fi
+
+      - name: Sanity checks
+        run: |
+          test -f dist/index.html || (echo "dist/index.html missing" && exit 1)
+          if grep -E '/src/main\.(t|j)sx?' dist/index.html >/dev/null 2>&1; then
+            echo "index.html references /src/main.* — build failed"; exit 1
+          fi
+
+      - name: Post-build adjustments
+        run: |
+          if [[ -f CNAME ]]; then cp CNAME dist/CNAME; fi
+          if [[ -f public/CNAME ]]; then cp public/CNAME dist/CNAME; fi
+          if [[ -f public/_headers ]]; then cp public/_headers dist/_headers; fi
+          if [[ -f public/_redirects ]]; then cp public/_redirects dist/_redirects; fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

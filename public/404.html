@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0D1117" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D1117" media="(prefers-color-scheme: dark)" />
+    <title>404 — Not Found</title>
+    <style>
+      :root {
+        --bg: #0d1117;
+        --surface: #0f121a;
+        --text: #e6edf3;
+        --muted: #94a3b8;
+        --accent: #58a6ff;
+        --border: color-mix(in oklch, var(--accent) 15%, transparent);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f8fafc;
+          --surface: #ffffff;
+          --text: #0b1320;
+          --muted: #64748b;
+          --accent: #1f6feb;
+        }
+      }
+
+      html,
+      body {
+        height: 100dvh;
+        overflow: hidden;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            60% 100% at 50% 100%,
+            color-mix(in oklch, var(--accent) 12%, transparent) 0%,
+            transparent 70%
+          ),
+          linear-gradient(
+            180deg,
+            color-mix(in oklch, var(--bg) 0%, transparent) 0%,
+            transparent 50%
+          ),
+          var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 ui-sans-serif,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Inter,
+          "Helvetica Neue",
+          Arial,
+          "Noto Sans";
+        display: grid;
+        place-items: center;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .wrap {
+        position: relative;
+        width: min(92vw, 760px);
+        margin: auto;
+        padding: 28px;
+      }
+      .card {
+        position: relative;
+        border-radius: 20px;
+        background: color-mix(in oklch, var(--surface) 86%, transparent);
+        border: 1px solid var(--border);
+        box-shadow:
+          0 10px 30px -15px rgba(0, 0, 0, 0.55),
+          0 0 0 1px color-mix(in oklch, var(--accent) 10%, transparent) inset;
+        -webkit-backdrop-filter: blur(14px) saturate(1.05);
+        backdrop-filter: blur(14px) saturate(1.05);
+        overflow: hidden;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+      }
+      .r {
+        background: #ef4444cc;
+      }
+      .y {
+        background: #eab308cc;
+      }
+      .g {
+        background: #22c55ecc;
+      }
+
+      .body {
+        padding: 22px;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        padding-bottom: 0.3em;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        line-height: 1.2;
+        font-size: clamp(42px, 6vw, 74px);
+        background: linear-gradient(
+          90deg,
+          color-mix(in oklch, var(--text) 100%, transparent) 0%,
+          color-mix(in oklch, var(--accent) 70%, var(--text)) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-origin: text;
+        color: transparent;
+        filter: drop-shadow(0 0 18px color-mix(in oklch, var(--accent) 25%, transparent));
+        -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0);
+      }
+      p {
+        margin: 0.25rem 0 0.75rem;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr;
+        margin-top: 18px;
+        margin-bottom: 12px;
+      }
+      @media (min-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr auto;
+          align-items: center;
+        }
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+        color: #fff;
+        background: var(--accent);
+        box-shadow:
+          0 0 0 1px color-mix(in oklch, var(--accent) 18%, transparent) inset,
+          0 8px 22px -14px color-mix(in oklch, var(--accent) 50%, transparent);
+        transform: translateZ(0);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          filter 0.2s ease;
+        will-change: transform, filter, box-shadow;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.2),
+          0 0 0 1px color-mix(in oklch, var(--accent) 30%, transparent) inset;
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn-ghost {
+        color: var(--text);
+        background: color-mix(in oklch, var(--bg) 70%, transparent);
+        border: 1px solid var(--border);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        background: color-mix(in oklch, var(--bg) 70%, transparent);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 6px 10px;
+      }
+      .scan {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        opacity: 0.8;
+        background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0) 60%
+        );
+        background-size: 100% 200%;
+        animation: scan 3.2s linear infinite;
+      }
+      @keyframes scan {
+        0% {
+          background-position-y: 0%;
+        }
+        100% {
+          background-position-y: 200%;
+        }
+      }
+
+      .bar {
+        height: 8px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: color-mix(in oklch, var(--bg) 70%, transparent);
+        border: 1px solid var(--border);
+      }
+      .bar > i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--accent),
+          color-mix(in oklch, var(--accent) 60%, transparent)
+        );
+        width: 10%;
+        animation: load 2.2s ease-in-out infinite;
+        background-size: 200% 100%;
+      }
+      @keyframes load {
+        0% {
+          width: 8%;
+        }
+        50% {
+          width: 72%;
+        }
+        100% {
+          width: 8%;
+        }
+      }
+
+      .footer {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .led {
+        width: 3px;
+        height: 18px;
+        border-radius: 20px;
+        background: var(--accent);
+        box-shadow: 0 0 12px color-mix(in oklch, var(--accent) 60%, transparent);
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .small {
+        font-size: 12px;
+      }
+      .center {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .code {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: color-mix(in oklch, var(--bg) 70%, transparent);
+        color: var(--muted);
+        font-size: 12px;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="topbar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span style="margin-left: 8px">boot@portfolio — zsh</span>
+        </div>
+
+        <div class="body">
+          <div class="row">
+            <div class="led" aria-hidden="true"></div>
+            <span class="badge mono"
+              >status: <strong style="color: var(--text); margin-left: 6px">404</strong></span
+            >
+          </div>
+
+          <h1>Page not found</h1>
+          <p>
+            We couldn’t locate the page you asked for. It may have been moved, renamed, or removed.
+          </p>
+
+          <div class="code mono" id="path"></div>
+
+          <div class="grid">
+            <div class="row small">
+              <span>Try returning to the homepage or report a broken link.</span>
+            </div>
+            <div class="center">
+              <a class="btn btn-ghost" id="copy">Copy path</a>
+              <a class="btn" id="home">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M3 9.5l9-7 9 7" />
+                  <path d="M9 22V12h6v10" />
+                </svg>
+                Go Home
+              </a>
+            </div>
+          </div>
+
+          <div class="bar" aria-hidden="true"><i></i></div>
+
+          <div class="footer">
+            <span class="mono small">➜</span>
+            <span class="small">Tip: bookmark the homepage for quick access.</span>
+          </div>
+        </div>
+
+        <div class="scan" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const $ = (sel) => document.querySelector(sel);
+
+        const here = location.pathname + location.search + location.hash;
+        const pathEl = document.getElementById("path");
+        if (pathEl) pathEl.textContent = "Request: " + here;
+
+        function normPath(p) {
+          try {
+            let s = String(p || "/");
+            if (!s.startsWith("/")) s = "/" + s;
+            if (!s.endsWith("/")) s += "/";
+            return s;
+          } catch {
+            return "/";
+          }
+        }
+
+        function fromCanonical() {
+          try {
+            const el = $('link[rel="canonical"]');
+            if (!el || !el.href) return null;
+            const u = new URL(el.href, location.origin);
+            return u.pathname || "/";
+          } catch {
+            return null;
+          }
+        }
+
+        function fromBaseTag() {
+          try {
+            const el = $("base[href]");
+            if (!el) return null;
+            const u = new URL(el.getAttribute("href"), location.origin);
+            return u.pathname || "/";
+          } catch {
+            return null;
+          }
+        }
+
+        function fromGlobalVar() {
+          try {
+            const v = window.__BASE_PATH__;
+            return v ? String(v) : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function ghHeuristic() {
+          try {
+            const host = location.hostname;
+            const seg = location.pathname.split("/").filter(Boolean);
+            const isGH = /\.github\.io$/i.test(host);
+            if (!isGH) return "/";
+            return seg.length ? "/" + seg[0] + "/" : "/";
+          } catch {
+            return "/";
+          }
+        }
+
+        function computeBase() {
+          const c = fromCanonical();
+          if (c) return normPath(c);
+          const b = fromBaseTag();
+          if (b) return normPath(b);
+          const g = fromGlobalVar();
+          if (g) return normPath(g);
+          return normPath(ghHeuristic());
+        }
+
+        const BASE = computeBase();
+
+        const homeBtn = document.getElementById("home");
+        if (homeBtn) {
+          homeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = new URL(BASE, location.origin).toString();
+            location.href = target;
+          });
+        }
+
+        const copyBtn = document.getElementById("copy");
+        if (copyBtn) {
+          copyBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+              await navigator.clipboard.writeText(location.href);
+              copyBtn.textContent = "Copied!";
+              setTimeout(() => (copyBtn.textContent = "Copy path"), 1200);
+            } catch {
+              copyBtn.textContent = "Failed";
+              setTimeout(() => (copyBtn.textContent = "Copy path"), 1200);
+            }
+          });
+        }
+
+        try {
+          const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch {}
+      })();
+    </script>
+  </body>
+</html>

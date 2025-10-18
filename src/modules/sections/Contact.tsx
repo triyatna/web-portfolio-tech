@@ -1,21 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import siteData from "../../data/data.json";
 
-type ContactConfig = {
+export type ContactConfig = {
   enabled: boolean;
   form: { mode: "mailto" | "formspree" | "disabled"; to?: string; formspreeId?: string };
   contact_me?: { address?: string; email?: string; website?: string };
 };
 
-export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
+export const Contact: React.FC<{ config: ContactConfig; displayName?: string }> = ({
+  config,
+  displayName,
+}) => {
   const [status, setStatus] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [execOut, setExecOut] = useState<string | null>(null);
+  if (config.form.mode === "disabled" || !config.enabled) return null;
 
-  if (config.form.mode === "disabled") return null;
-
-  const name = (siteData?.personal?.name ?? "").trim() || "Anonymous";
+  const name = (displayName ?? "").trim() || "Anonymous";
   const email = (config.contact_me?.email ?? config.form.to ?? "").trim();
   const website = (config.contact_me?.website ?? "").trim();
 
@@ -80,6 +81,7 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
   };
 
   const codePaneRef = useRef<HTMLDivElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null); // ← kontainer constraints
   const rowRefs = useRef<HTMLDivElement[]>([]);
   const lines = useMemo(() => pyCode.split("\n"), [pyCode]);
   const [wrapCounts, setWrapCounts] = useState<number[]>([]);
@@ -87,7 +89,6 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
   useEffect(() => {
     const el = codePaneRef.current;
     if (!el) return;
-
     const measure = () => {
       const lh = 24;
       const counts = rowRefs.current.map((r) => {
@@ -97,12 +98,10 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
       });
       setWrapCounts(counts);
     };
-
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     rowRefs.current.forEach((r) => r && ro.observe(r));
     measure();
-
     document.fonts?.ready?.then(measure).catch(() => {});
     window.addEventListener("resize", measure);
     return () => {
@@ -120,10 +119,10 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
     return nums;
   }, [lines, wrapCounts]);
 
-  function mailtoHref(subject: string, body: string) {
+  const mailtoHref = (subject: string, body: string) => {
     const to = config.form.to || "";
     return `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
+  };
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -140,7 +139,10 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
       window.location.href = mailtoHref(subject, body);
       setSending(false);
       setStatus("Opening your mail client…");
-    } else if (config.form.mode === "formspree") {
+      return;
+    }
+
+    if (config.form.mode === "formspree") {
       const id = config.form.formspreeId?.trim();
       if (!id) {
         setStatus("Missing Formspree ID.");
@@ -162,12 +164,18 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
         setSending(false);
         setStatus("Network error.");
       }
+      return;
     }
+
+    setSending(false);
   };
 
   return (
     <div className="grid gap-6 md:grid-cols-[1.1fr_.9fr]">
-      <div className="relative rounded-2xl border border-subtle bg-[color:var(--bg)]/55 backdrop-blur-xl shadow-lg">
+      <div
+        ref={cardRef}
+        className="relative rounded-2xl border border-subtle bg-[color:var(--bg)]/55 backdrop-blur-xl shadow-lg"
+      >
         <div className="flex items-center gap-2 px-3 py-2 border-b border-subtle">
           <span className="h-3 w-3 rounded-full bg-red-500/80" />
           <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
@@ -204,8 +212,7 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
                 ref={(el) => {
                   if (el) rowRefs.current[i] = el;
                 }}
-                className="whitespace-pre-wrap break-words"
-                style={{ overflowWrap: "anywhere" }}
+                className="ow-anywhere whitespace-pre-wrap break-words"
               >
                 <code dangerouslySetInnerHTML={{ __html: highlightPy(ln || " ") }} />
               </div>
@@ -220,9 +227,14 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="pointer-events-auto absolute right-3 top-3 z-10 max-w-xs rounded-xl border border-subtle bg-[color:var(--bg)]/80 backdrop-blur px-3 py-2 text-sm shadow-lg"
+              className="pointer-events-auto absolute right-3 top-3 z-10 max-w-xs rounded-xl border border-subtle bg-[color:var(--bg)]/80 backdrop-blur px-3 py-2 text-sm shadow-lg touch-none select-none"
               role="status"
               aria-live="polite"
+              drag
+              dragConstraints={cardRef}
+              dragMomentum={false}
+              dragElastic={0.12}
+              whileDrag={{ scale: 1.02 }}
             >
               <div className="flex items-start gap-2">
                 <span className="mt-0.5 inline-block h-2 w-2 rounded-full bg-[color:var(--accent)]" />
@@ -297,20 +309,16 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
           <button
             type="submit"
             disabled={sending}
-            className="group relative inline-flex items-center rounded-xl p-[2px] focus-ring disabled:opacity-60 disabled:cursor-not-allowed dark:bg-sky-950"
+            className="cursor-pointer group relative inline-flex items-center rounded-xl p-[2px] focus-ring disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span aria-hidden="true" className="absolute inset-0 rounded-xl btn-rot" />
-
             <span
               className="
-        relative inline-flex items-center gap-2 rounded-[0.65rem]
-        px-4 py-2 text-sm font-medium transition
-        bg-[color:var(--accent)] text-white
-        shadow-[0_4px_18px_rgba(0,0,0,0.15)]
-        group-hover:shadow-[0_10px_30px_rgba(88,166,255,0.35)]
-        group-hover:-translate-y-0.5 active:translate-y-0
-        dark:bg-[color:var(--accent)]/10
-      "
+                contact-btn relative inline-flex items-center gap-2 rounded-[0.65rem]
+                px-4 py-2 text-sm font-medium transition
+                shadow-[0_4px_18px_rgba(0,0,0,0.15)]
+                group-hover:shadow-[0_10px_30px_rgba(88,166,255,0.35)]
+                group-hover:-translate-y-0.5 active:translate-y-0
+              "
             >
               {sending ? (
                 <>
@@ -341,28 +349,27 @@ export const Contact: React.FC<{ config: ContactConfig }> = ({ config }) => {
             </span>
           </button>
 
-          {status && <p className="text-sm text-muted">{status}</p>}
+          {status && (
+            <p className="text-sm text-muted" role="status" aria-live="polite">
+              {status}
+            </p>
+          )}
         </div>
       </form>
 
       <style>{`
-        .tok-kw     { color: #c678dd; }
-        .tok-string { color: #98c379; }
-        .tok-type   { color: #e5c07b; }
-        .tok-fn     { color: #61afef; }
-        .tok-comment{ color: #7f848e; }
-
-        :root:not(.dark)[data-theme="light"] .tok-comment { color: #6b7280; }
-        :root:not(.dark)[data-theme="light"] .tok-kw { color: #a626a4; }
-        :root:not(.dark)[data-theme="light"] .tok-string { color: #22863a; }
-        :root:not(.dark)[data-theme="light"] .tok-type { color: #b08800; }
-        :root:not(.dark)[data-theme="light"] .tok-fn { color: #005cc5; }
-
-        .code-pane code, .code-pane div {
-          white-space: pre-wrap;
-          word-break: break-word;
-          overflow-wrap: anywhere;
-        }
+        .tok-kw{color:#c678dd}.tok-string{color:#98c379}.tok-type{color:#e5c07b}.tok-fn{color:#61afef}.tok-comment{color:#7f848e}
+        :root:not(.dark)[data-theme="light"] .tok-comment{color:#6b7280}
+        :root:not(.dark)[data-theme="light"] .tok-kw{color:#a626a4}
+        :root:not(.dark)[data-theme="light"] .tok-string{color:#22863a}
+        :root:not(.dark)[data-theme="light"] .tok-type{color:#b08800}
+        :root:not(.dark)[data-theme="light"] .tok-fn{color:#005cc5}
+        .code-pane code,.code-pane div{white-space:pre-wrap;word-break:break-word}.ow-anywhere{overflow-wrap:anywhere}
+        .btn-rot{background:conic-gradient(from 0deg,color-mix(in oklch,var(--accent) 80%,transparent),transparent 20% 60%,color-mix(in oklch,var(--accent) 80%,transparent));filter:blur(8px);opacity:.65;animation:rot 3.5s linear infinite}
+        @keyframes rot{to{transform:rotate(360deg)}}
+        .contact-btn{background:var(--accent);color:#fff;
+          box-shadow:0 0 0 1px color-mix(in oklch,var(--accent) 18%,transparent) inset,0 8px 22px -14px color-mix(in oklch,var(--accent) 50%,transparent)}
+        [data-theme="light"] .contact-btn{background:color-mix(in oklch,var(--accent) 94%,white);color:#f0f0f0}
       `}</style>
     </div>
   );
