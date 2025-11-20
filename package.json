@@ -2,6 +2,8 @@
   "name": "tri-yatna-portfolio",
   "version": "1.0.0",
   "private": true,
+  "author": "Tri Yatna",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=18.0.0"
